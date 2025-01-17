@@ -17,8 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sql = "INSERT INTO employees(City, Email) VALUES ('$nombre', '$correo')";
 
     // Ejecutar la consulta
-    //if ($conn->query($sql) === TRUE) {
-    if(true){
+    if ($conn->query($sql) === TRUE) {
+    //if(true){
         session_start();
         // Guardar el dato en la sesión
         $_SESSION['matriz'] = "prueba";
