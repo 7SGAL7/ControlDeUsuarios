@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $dateWork = date("Y-m-d");
 
     // Preparar la consulta SQL para insertar los datos
-    $sql = "INSERT INTO employees(Name, LastName, Matricula, Password, Birthdate, Phone, DateHiring, Email,City) VALUES ('$nombre', '$lastname', '$matriz' ,'', '$dob', '$phone', $dateWork ,'$correo', '$city')";
+    $sql = "INSERT INTO employees(Name, LastName, Matricula, Password, Birthdate, Phone, DateHiring, Email,City) VALUES ('$nombre', '$lastname', '$matriz' ,'', '$dob', '$phone', '$dateWork' ,'$correo', '$city')";
 
     // Ejecutar la consulta
     if ($conn->query($sql) === TRUE) {

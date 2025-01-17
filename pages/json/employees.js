@@ -1,21 +1,17 @@
-// Función para abrir el modal con los detalles del usuario
-function verDetalles(nombre, telefono, fecha, correo, ciudad) {
+function verDetalles(nombre, telefono, fechaNacimiento, correo, ciudad, matricula) {
+    // Asignar los valores a los elementos correspondientes en el modal
     document.getElementById('detalleNombre').textContent = nombre;
     document.getElementById('detalleTelefono').textContent = telefono;
-    document.getElementById('detalleFecha').textContent = fecha;
+    document.getElementById('detalleFecha').textContent = fechaNacimiento;
     document.getElementById('detalleCorreo').textContent = correo;
     document.getElementById('detalleCiudad').textContent = ciudad;
-    document.getElementById('modal').style.display = "block";
+    document.getElementById('detalleTelefono').value = telefono;
+    document.getElementById('nombre2').value = nombre;
 }
 
-// Función para cerrar el modal
-function cerrarModal() {
-    document.getElementById('modal').style.display = "none";
-}
 
-// Cerrar el modal si se hace clic fuera del contenido del modal
-window.onclick = function(event) {
-    if (event.target == document.getElementById('modal')) {
-        cerrarModal();
-    }
-}
+var table = new DataTable('#table-employees', {
+    language: {
+        url: '//cdn.datatables.net/plug-ins/2.2.1/i18n/es-ES.json',
+    },
+});
