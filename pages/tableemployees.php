@@ -43,7 +43,7 @@
                     <td><?php echo $row['Phone']; ?></td>
                     <td><?php echo $row['Email']; ?></td>
                     <td><?php echo $row['DateHiring']; ?></td>
-                    <td><button onclick="verDetalles( '<?php echo $row['Name'] . ' ' . $row['LastName'];?>', '<?php echo $row['Phone']; ?>', '<?php echo $row['Birthdate']; ?>', '<?php echo $row['Email']; ?>', '<?php echo $row['City']; ?>')">Ver Detalles</button></td>
+                    <td><button onclick="verDetalles( '<?php echo $row['Name'] . ' ' . $row['LastName'];?>', '<?php echo $row['Phone']; ?>', '<?php echo $row['Birthdate']; ?>', '<?php echo $row['Email']; ?>', '<?php echo $row['City']; ?>', '<?php echo $row['Matricula']; ?>')">Ver Detalles</button></td>
                 </tr>
                 <?php  } } ?>
             </tbody>

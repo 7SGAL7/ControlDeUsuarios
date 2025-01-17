@@ -10,11 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $city = $conn->real_escape_string($_POST['city']);
     $correo = $conn->real_escape_string($_POST['email']);
     $phone = $conn->real_escape_string($_POST['phone']);
-    $matriz = '$' . $nombre . $lastname . "";
-
+    $matriz = date("y") . substr($nombre, 0, 1) . substr($lastname, 0, 1) . "";
+    $dateWork = date("Y-m-d");
 
     // Preparar la consulta SQL para insertar los datos
-    $sql = "INSERT INTO employees(City, Email) VALUES ('$nombre', '$correo')";
+    $sql = "INSERT INTO employees(Name, LastName, Matricula, Password, Birthdate, Phone, DateHiring, Email,City) VALUES ('$nombre', '$lastname', '$matriz' ,'', '$dob', '$phone', $dateWork ,'$correo', '$city')";
 
     // Ejecutar la consulta
     if ($conn->query($sql) === TRUE) {
