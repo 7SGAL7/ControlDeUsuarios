@@ -13,7 +13,7 @@ function validarLogin(event) {
         errorMessage.style.display = "none"; // Ocultar mensaje de error
         
         // Redirigir a la página principal (o cualquier otra página)
-        window.location.href = "tableemployees.html"; // Cambia 'pagina-principal.html' por la página que deseas
+        window.location.href = "pages/tableemployees.php"; // Cambia 'pagina-principal.html' por la página que deseas
     } else {
         // Si las credenciales son incorrectas
         errorMessage.style.display = "block"; // Mostrar mensaje de error

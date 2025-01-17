@@ -90,7 +90,10 @@
         <label for="name">Nombre Completo</label>
         <input type="text" id="name" name="name" required>
 
-        <label for="dob">Fecha de Nacimiento</label>
+        <label for="name">Last Name</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="dob">Birthdate</label>
         <input type="date" id="dob" name="dob" required>
 
         <label for="city">Ciudad</label>
