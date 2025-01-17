@@ -9,8 +9,13 @@
 <body>
     <div class="success-container">
         <h1>¡Registro Exitoso!</h1>
-        <p>El usuario se ha registrado correctamente.</p>
-        <p><strong>Usuario:</strong> <span id="usuario"></span></p>
+        <p>Te has registrado correctamente.</p>
+        <p><strong>Usuario:</strong> <span id="usuario">
+        <?php
+        session_start();
+        echo $_SESSION['matriz'];
+        ?>
+        </span></p>
         
     </div>
 

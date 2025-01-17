@@ -85,13 +85,12 @@
         <img src="logo.png" alt="Logo de la Empresa">
         <h1>Registro de Trabajadores</h1>
     </header>
-    
-    <form action="/process_registration" method="POST">
+    <form action="logic/processRegister.php" method="POST">
         <label for="name">Nombre Completo</label>
         <input type="text" id="name" name="name" required>
 
         <label for="name">Last Name</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text" id="lastname" name="lastname" required>
 
         <label for="dob">Birthdate</label>
         <input type="date" id="dob" name="dob" required>
@@ -109,7 +108,7 @@
     </form>
 
     <footer>
-        <p>&copy; 2025 Empresa XYZ. Todos los derechos reservados.</p>
+        <p>&copy; 2025 JemoWorkers. Todos los derechos reservados.</p>
     </footer>
 
     <script>

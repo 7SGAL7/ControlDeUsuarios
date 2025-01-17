@@ -7,6 +7,16 @@
     <link rel="stylesheet" href="css/employees.css">
 </head>
 <body>
+
+<?php
+    // Incluir el archivo de conexión
+    require '../bd/conection.php';
+
+    $sql = "SELECT * FROM employees";
+    $result = $conn->query($sql);
+
+?>
+
     <div class="container">
         <h1>Información de Contacto</h1>
         <table>
@@ -14,33 +24,28 @@
                 <tr>
                     <th>Matricula</th>
                     <th>Nombre</th>
+                    <th>Apellido</th>
                     <th>Teléfono</th>
-                    <th>Fecha de Nacimiento</th>
                     <th>Correo</th>
-                    <th>Ciudad</th>
-                    <th>Detalles</th> <!-- Columna para los botones -->
+                    <th>Fecha de Inicio</th>
+                    <th>Detalles</th>
                 </tr>
             </thead>
             <tbody>
+                <?php 
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                ?>
                 <tr>
-                    <td>Juan Pérez</td>
-                    <td>Juan Pérez</td>
-                    <td>(123) 456-7890</td>
-                    <td>01/01/1990</td>
-                    <td>juan@example.com</td>
-                    <td>Ciudad de México</td>
-                    <td><button onclick="verDetalles('Juan Pérez', '(123) 456-7890', '01/01/1990', 'juan@example.com', 'Ciudad de México')">Ver Detalles</button></td>
+                    <td><?php echo $row['Matricula']; ?></td>
+                    <td><?php echo $row['Name']; ?></td>
+                    <td><?php echo $row['LastName']; ?></td>
+                    <td><?php echo $row['Phone']; ?></td>
+                    <td><?php echo $row['Email']; ?></td>
+                    <td><?php echo $row['DateHiring']; ?></td>
+                    <td><button onclick="verDetalles( '<?php echo $row['Name'] . ' ' . $row['LastName'];?>', '<?php echo $row['Phone']; ?>', '<?php echo $row['Birthdate']; ?>', '<?php echo $row['Email']; ?>', '<?php echo $row['City']; ?>')">Ver Detalles</button></td>
                 </tr>
-                <tr>
-                    <td>Juan Pérez</td>
-                    <td>Ana García</td>
-                    <td>(098) 765-4321</td>
-                    <td>15/03/1985</td>
-                    <td>ana@example.com</td>
-                    <td>Guadalajara</td>
-                    <td><button onclick="verDetalles('Ana García', '(098) 765-4321', '15/03/1985', 'ana@example.com', 'Guadalajara')">Ver Detalles</button></td>
-                </tr>
-                <!-- Puedes agregar más filas de información aquí -->
+                <?php  } } ?>
             </tbody>
         </table>
     </div>
@@ -57,7 +62,7 @@
             <p><strong>Ciudad:</strong> <span id="detalleCiudad"></span></p>
         </div>
     </div>
-
+    <?php $conn->close();  ?>
     <script src="json/employees.js">
 
     </script>
