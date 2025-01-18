@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    if(empty($_SESSION["id"])){
+        header("location: ../login.php");
+    }
+?>
 <html lang="es">
     <head>
         <meta charset="UTF-8">
@@ -21,6 +27,8 @@
         require '../bd/conection.php';
         $sql = "SELECT * FROM employees";
         $result = $conn->query($sql);
+
+        echo $_SESSION["Name"];
     ?>
 
         <div class="container">
@@ -120,6 +128,8 @@
             </div>
         </div>
 
+
+        <a href="controller/controllerCerrarSesion.php">Cerrar sesión</a>
         <script src = "json/employees.js">                  
 
         </script>

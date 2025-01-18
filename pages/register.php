@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Registro de Trabajadores</title>
+    <link rel="icon" href="img/JEMO-ICON.png">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -88,7 +89,7 @@
     </header>
 
 
-            <form action="logic/processRegister.php" method="POST" class="mt-4">
+            <form action="controller/processRegister.php" method="POST" class="mt-4">
                 <div class="mb-3">
                     <label for="name" class="form-label">Nombre Completo</label>
                     <input type="text" id="name" name="name" class="form-control" required>
