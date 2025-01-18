@@ -22,7 +22,7 @@ body {
 
 /* Estilo para el título */
 h1 {
-    color: #4CAF50;
+    color: #0a233e;
 }
 
 /* Estilo para el mensaje */
@@ -35,13 +35,9 @@ p {
 .btn {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #0a233e;
     color: white;
     text-decoration: none;
     border-radius: 4px;
     margin-top: 20px;
-}
-
-.btn:hover {
-    background-color: #45a049;
 }

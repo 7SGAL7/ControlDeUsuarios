@@ -4,13 +4,24 @@ require '../../bd/conection.php';
 // Verificar si se han recibido los datos del formulario
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Capturar los datos del formulario
+    
+    $sql_id = "SELECT id FROM employees ORDER BY id DESC LIMIT 1;";
+    $result = $conn->query($sql_id);
+
+    if ($result->num_rows > 0) { 
+        $row = $result->fetch_assoc();
+        $id = $row['id'] 
+    }else{
+        $id = 1;
+    }
+
     $nombre = $conn->real_escape_string($_POST['name']);
     $lastname = $conn->real_escape_string($_POST['lastname']);
     $dob = $conn->real_escape_string($_POST['dob']);
     $city = $conn->real_escape_string($_POST['city']);
     $correo = $conn->real_escape_string($_POST['email']);
     $phone = $conn->real_escape_string($_POST['phone']);
-    $matriz = date("y") . substr($nombre, 0, 1) . substr($lastname, 0, 1) . "";
+    $matriz = substr($nombre, 0, 1) . substr($lastname, 0, 1) .  str_pad($id, 3, "0", STR_PAD_LEFT);;
     $dateWork = date("Y-m-d");
 
     // Preparar la consulta SQL para insertar los datos
@@ -18,17 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Ejecutar la consulta
     if ($conn->query($sql) === TRUE) {
-    //if(true){
         session_start();
         // Guardar el dato en la sesión
-        $_SESSION['matriz'] = "prueba";
+        $_SESSION['matriz'] = $matriz;
         header("Location: ../sucessful.php");
         exit();
-    } else {
-        //echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
 
-// Cerrar la conexión
 $conn->close();
 ?>

@@ -10,10 +10,10 @@
     <div class="success-container">
         <h1>¡Registro Exitoso!</h1>
         <p>Te has registrado correctamente.</p>
-        <p><strong>Usuario:</strong> <span id="usuario">
+        <p><strong>Numero de Trabajador:</strong> <span id="usuario">
         <?php
         session_start();
-        echo $_SESSION['matriz'];
+            echo $_SESSION['matriz'];
         ?>
         </span></p>
         
