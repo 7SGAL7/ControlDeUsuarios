@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($result->num_rows > 0) { 
         $row = $result->fetch_assoc();
-        $id = $row['id'];
+        $id = $row['id'] + 1;
     }else{
         $id = 1;
     }

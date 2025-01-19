@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="pages/css/login.css">
     <link href="pages/librery/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="pages/librery/css/dataTables.bootstrap5.css" rel="stylesheet" type="text/css">  
+    <link rel="icon" href="pages/img/JEMO-ICON.png">
 </head>
 <body class="text-center">
     <form class="form-signin" method = "POST">
