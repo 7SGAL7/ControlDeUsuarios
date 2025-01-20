@@ -21,7 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $clasificacion = $_POST['detalleClasificacion'];
     $ssn = $_POST['detalleSSN'];
     $deposito_directo = $_POST['detaildeposito'];
-    $comentario = $_POST['DetailComment'];
+    $comentario = str_replace(array("\r", "\n"), ' ', $_POST['DetailComment']);
+
+
+
 
     // Preparar la consulta SQL para insertar los datos
     $sql = "UPDATE employees 

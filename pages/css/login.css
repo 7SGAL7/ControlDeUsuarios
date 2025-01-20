@@ -1,7 +1,7 @@
 /* Estilo general */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    background-color: #a1aaad;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,7 +11,7 @@ body {
 
 /* Contenedor del formulario de login */
 .login-container {
-    background-color: #ffffff;
+    background-color: #a1aaad;
     padding: 40px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

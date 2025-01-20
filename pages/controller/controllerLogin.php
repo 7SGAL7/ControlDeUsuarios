@@ -6,6 +6,12 @@ if(!empty($_POST["login_form"])){
         $user = $_POST["username"];
         $password = $_POST["password"];
         $acceso = "se accedio correctamente";
+
+        if (isset($_POST['remember'])) {
+            // Crear una cookie para recordar al usuario por 30 días (30 días * 24 horas * 60 minutos * 60 segundos)
+            setcookie('username', $user, time() + (30 * 24 * 60 * 60), '/');
+        }
+
         $sql = $conn->query("select * from jemoworkersusers where User='$user' and Password='$password'");
         if($dato=$sql->fetch_object()){
             $_SESSION["id"]=$dato->id;

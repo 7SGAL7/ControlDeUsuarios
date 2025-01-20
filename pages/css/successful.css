@@ -49,7 +49,7 @@ p {
 }
 
 .success-container {
-    width: 60%; /* Ajusta el ancho a un 80% del contenedor principal */
+    width: 80%; /* Ajusta el ancho a un 80% del contenedor principal */
     max-width: 700px; /* Limita el ancho máximo a 1200px */
     margin: 0 auto; /* Centra el contenedor en la página */
     padding: 20px; /* Espacio interior para que no se pegue al borde */

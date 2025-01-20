@@ -26,18 +26,16 @@
 
     <?php
         // Incluir el archivo de conexión
+        require 'Menu.php';
         require '../bd/conection.php';
         $sql = "SELECT * FROM employees";
         $result = $conn->query($sql);
 
-        echo $_SESSION["Name"];
     ?>
 
         <div class="container">
             <h1>Información de Trabajadores</h1>
-
-            
-            <table id="table-employees" style="width:100%">
+            <table id="table-employees">
                 <thead>
                     <tr>
                         <th>N. Trabajador</th>
@@ -196,9 +194,7 @@
                 </div>
             </div>
         </div>
-
-
-        <a href="controller/controllerCerrarSesion.php">Cerrar sesión</a>
+        
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script src = "json/employees.js">                  
 

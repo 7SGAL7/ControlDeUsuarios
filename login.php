@@ -1,3 +1,10 @@
+<?php
+    $username_value = '';
+    if (isset($_COOKIE['username'])) {
+        $username_value = $_COOKIE['username'];  // Obtener el nombre de usuario de la cookie
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,18 +22,28 @@
       <h1 class="h3 mb-3 font-weight-normal">Iniciar sesión</h1>
 
         <div class="d-flex justify-content-center mb-3">
-            <input type="text" id="username"  name="username" class="form-control" placeholder="Username" required="" autofocus="">
+            <input type="text" id="username"  name="username" class="form-control" placeholder="Username" required="" autofocus="" value = "<?php echo $username_value; ?>">
         </div>
         <div class="d-flex justify-content-center mb-3">
             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">
         </div>
-        <div class="checkbox mb-3" bis_skin_checked="1">
-            <label>
-            <input type="checkbox" value="remember-me"> Recordar
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="remember" <?php if (isset($_COOKIE['username'])) {echo "
+            checked";}?>>
+            <label class="form-check-label" for="flexCheckDefault">
+                RECORDAR USUARIO
             </label>
         </div>
-      
-      <input class="btn btn-lg btn-primary btn-block" type="submit" name = "login_form" value ="Iniciar sesión">
+
+      <div>
+          <input class="btn btn-lg btn-primary btn-block" type="submit" name = "login_form" value ="Iniciar sesión">
+      </div class="checkbox mb-3">
+ 
+      <div class="checkbox mb-3">
+          <a href="pages/register.php">Registrate</a>
+        
+      </div>
         
         <div class="d-flex justify-content-center">
             <?php 
