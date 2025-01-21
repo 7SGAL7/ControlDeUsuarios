@@ -41,7 +41,7 @@
 
         <div class="container">
             <h1>SISTEMA DE REGISTRO DE TRABAJADORES</h1>
-            <a class="btn btn-outline-success" href ="controller/controllergenerarexcel.php"><img src = "icon/flecha-descarga.png" style = "width:20px"></i> Descargar en Excel</a>
+            <a class="btn btn-outline-success" href ="controller/controllerGenerarExcel.php"><img src = "icon/flecha-descarga.png" style = "width:20px"></i> Descargar en Excel</a>
             <table id="table-employees">
                 <thead>
                     <tr>

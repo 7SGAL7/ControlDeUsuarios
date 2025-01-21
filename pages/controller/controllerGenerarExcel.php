@@ -33,6 +33,7 @@
             <th>Hospedaje</th>
             <th>SSN</th>
             <th>Deposito directo</th>
+            <th>Comentarios</th>
         </tr>
     </thead>
     <tbody id="content">
@@ -79,6 +80,7 @@
             }else{
                 echo "NO";
             };?></td>
+            <td><?php echo $row['Comments']; ?></td>
         </tr>
         <?php  } } ?>
     </tbody>
