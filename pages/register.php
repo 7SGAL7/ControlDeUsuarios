@@ -9,7 +9,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Registro de Trabajadores</title>
-    <link rel="icon" href="img/JEMO-ICON.png">
+    <link rel="icon" type="image/png" href="icon/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="icon/favicon//favicon.svg" />
+    <link rel="shortcut icon" href="icon/favicon//favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="icon/favicon//apple-touch-icon.png" />
+    <link rel="manifest" href="icon/favicon//site.webmanifest" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -73,6 +81,14 @@
             background-color: #0056b3;
         }
 
+        .img-fluid {
+            max-width: 50%;
+            height: auto;
+            align-items: center!important;
+            text-align: center !important;
+            border:none;
+        }
+
         .is-invalid {
             border: 1px solid red;
         }
@@ -97,7 +113,8 @@
     </header>
     <form action="controller/processRegister.php" method="POST" class="mt-4">
         <div class="mb-3" style = "text-align:center">
-            <img src="img/JEMO-ICON.svg" alt="Logo de la Empresa" class="img-thumbnail" style="max-width: 60%;height: auto;">
+            <img src="img/JEMO-ICON.svg" alt="Jemo Contractor LLC" class="img-fluid">
+            
             <h2>Registro de Trabajadores</h2>
         </div>
         <div class="mb-3">
@@ -138,61 +155,18 @@
                 </label>
             </div>
             <div class="mb-3">
-        
         </div>
         <button type="submit" class="btn btn-primary w-100">Registrar y Continuar</button>
     </form>
-    <footer class="text-center mt-5 py-4">
+    <div class="mt-1 py-1">
+        <a href="../login.php">Ya tengo usuario.</a>
+    </div>
+
+    <footer class="text-center mt-1 py-1">
     <a href="docs/PRIVACY POLICY-Jemo Contractor LLC.pdf">Jemo Contractor LLC 2025 | Aviso de Privacidad</a>
     </footer>
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-        /*
-        document.querySelector('form').addEventListener('submit', function(event) {
-            const dobInput = document.getElementById('dob');
-            const dobError = document.getElementById('dob-error');
-            const phoneInput = document.getElementById('phone');
-            const phoneError = document.getElementById('phone-error');
-
-            
-            //Validar Fecha de nacimiento
-            // Obtenemos la fecha actual
-            const today = new Date();
-            const birthDate = new Date(dobInput.value);
-            
-            // Calcular la diferencia en años
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const month = today.getMonth() - birthDate.getMonth();
-            if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
-                age--; // Si el cumpleaños no ha llegado este año, restamos un año
-            }
-
-            // Validar si la edad es mayor o igual a 18 años
-            if (age >= 18) {
-                dobError.style.display = 'none'; // Ocultar el mensaje de error si es válido
-                dobInput.classList.remove('is-invalid'); // Eliminar la clase de error si es válido
-            } else {
-                event.preventDefault();
-                dobError.style.display = 'block'; // Mostrar el mensaje de error
-                dobInput.classList.add('is-invalid'); // Añadir la clase de error
-            }
-            // validar telefono 
-            // Expresión regular para validar un número de teléfono (se puede personalizar según tu formato)
-            const phoneRegex = /^\+?\d{1,4}[-\s]?\(?\d{1,3}\)?[-\s]?\d{3}[-\s]?\d{4}$/;
-
-            // Verifica si el valor del input coincide con el regex
-            if (!phoneRegex.test(phoneInput.value)) {
-                phoneError.style.display = 'block'; // Muestra el mensaje de error
-                phoneInput.classList.add('is-invalid'); // Agrega la clase para estilo de error (puedes agregar un estilo CSS si lo deseas)
-            } else {
-                event.preventDefault();
-                phoneError.style.display = 'none'; // Oculta el mensaje de error
-                phoneInput.classList.remove('is-invalid'); // Elimina la clase de error si es válido
-            }
-        });*/
-    </script>
 </body>
 </html>

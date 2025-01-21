@@ -1,4 +1,10 @@
 <?php
+
+    session_start();
+    if(empty($_SESSION["id"])){
+        header("location: ../../login.php");
+    }
+
 // Verificar si el formulario ha sido enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 

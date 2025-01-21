@@ -8,11 +8,15 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Tabla de Información</title>
+        <title>SISTEMA DE REGISTRO DE TRABAJADORES</title>
         <link rel="stylesheet" href="css/employees.css">
+        <link rel="icon" type="image/png" href="icon/favicon/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="icon/favicon//favicon.svg" />
+        <link rel="shortcut icon" href="icon/favicon//favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="icon/favicon//apple-touch-icon.png" />
+        <link rel="manifest" href="icon/favicon//site.webmanifest" />
         <!-- Bootstrap core CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="icon" href="img/JEMO-ICON.png">
         <link href="librery/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="librery/css/dataTables.bootstrap5.css" rel="stylesheet" type="text/css">  
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">  
@@ -21,6 +25,8 @@
         <script src="librery/js/jquery-3.7.1.js"></script>
         <script src="librery/js/dataTables.js"></script>
         <script src="librery/js/dataTables.bootstrap5.js"></script>
+        
+
     </head>
     <body>
 
@@ -28,17 +34,18 @@
         // Incluir el archivo de conexión
         require 'Menu.php';
         require '../bd/conection.php';
-        $sql = "SELECT * FROM employees";
+        $sql = "SELECT * FROM employees ORDER BY `employees`.`id` DESC;";
         $result = $conn->query($sql);
 
     ?>
 
         <div class="container">
-            <h1>Información de Trabajadores</h1>
+            <h1>SISTEMA DE REGISTRO DE TRABAJADORES</h1>
+            <a class="btn btn-outline-success" href ="controller/controllergenerarexcel.php"><img src = "icon/flecha-descarga.png" style = "width:20px"></i> Descargar en Excel</a>
             <table id="table-employees">
                 <thead>
                     <tr>
-                        <th>N. Trabajador</th>
+                        <th>Número Trabajador</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>Correo</th>
@@ -61,7 +68,11 @@
                         <td><?php echo $row['LastName']; ?></td>
                         <td><?php echo $row['Email']; ?></td>
                         <td><?php echo $row['Proyect']; ?></td>
-                        <td><?php echo $row['DateHiring']; ?></td>
+                        <td><?php 
+                        $fecha_original = $row['DateHiring']; 
+                        $fecha_objeto = DateTime::createFromFormat('Y-m-d', $fecha_original);
+                        echo $fecha_objeto->format('m/d/Y'); 
+                        ?></td>
                         <td><?php 
                             if($row['SIGN']){
                                 echo "SI";

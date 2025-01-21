@@ -28,9 +28,12 @@ var table = new DataTable('#table-employees', {
     language: {
         url: '//cdn.datatables.net/plug-ins/2.2.1/i18n/es-ES.json',
     },
+    order: []
 });
 
 
 document.querySelector('.btn-update').addEventListener('click', function() {
     document.getElementById('formUsuario').submit();
 });
+
+

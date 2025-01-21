@@ -14,7 +14,12 @@
     <link rel="stylesheet" href="pages/css/login.css">
     <link href="pages/librery/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="pages/librery/css/dataTables.bootstrap5.css" rel="stylesheet" type="text/css">  
-    <link rel="icon" href="pages/img/JEMO-ICON.png">
+    
+    <link rel="icon" type="image/png" href="pages/icon/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="pages/icon/favicon//favicon.svg" />
+    <link rel="shortcut icon" href="pages/icon/favicon//favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="pages/icon/favicon//apple-touch-icon.png" />
+    <link rel="manifest" href="pages/icon/favicon//site.webmanifest" />
 </head>
 <body class="text-center">
     <form class="form-signin" method = "POST">
