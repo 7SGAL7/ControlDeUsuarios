@@ -1,4 +1,4 @@
-function verDetalles(nombre, apellido, telefono, fechaNacimiento, correo, ciudad, matricula, proyecto, firma, ingreso, direccion, tipo, clasificacion, hospedaje, ssn, deposito, notas, id) {
+function verDetalles(nombre, apellido, telefono, fechaNacimiento, correo, ciudad, matricula, proyecto, firma, ingreso, direccion, tipo, clasificacion, hospedaje, ssn, deposito, notas, id, payrate, active) {
     // Asignar los valores a los elementos correspondientes en el modal
     document.getElementById('detalleNombre').value = nombre;
     document.getElementById('detalleApellido').value = apellido;
@@ -20,7 +20,8 @@ function verDetalles(nombre, apellido, telefono, fechaNacimiento, correo, ciudad
     document.getElementById('detaildeposito').value = deposito;
     document.getElementById('DetailComment').value = notas;
     document.getElementById('detalleID').value = id;
-    
+    document.getElementById('detallePayRate').value = payrate;
+    document.getElementById('detailactivo').value = active;
 }
 
 

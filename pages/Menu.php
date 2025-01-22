@@ -52,7 +52,8 @@ body {
                   <span class="navbar-brand mb-0 h1"><?php echo "Bienvenido " . $_SESSION["Name"];?></span>
               </div>
           </div>
-          <div class="navbar seleccionar bg-body-tertiary mt-auto p-2">
+          <br>
+          <div class="navbar seleccionar bg-body-tertiary p-2">
             <div class="container-fluid">
               <a class="navbar-brand" href="controller/controllerCerrarSesion.php">    
                 Cerrar sesión

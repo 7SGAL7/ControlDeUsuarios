@@ -27,6 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $clasificacion = $_POST['detalleClasificacion'];
     $ssn = $_POST['detalleSSN'];
     $deposito_directo = $_POST['detaildeposito'];
+    $payRate = $_POST['detallePayRate'];
+    $active = $_POST['detailactivo'];
+
     $comentario = str_replace(array("\r", "\n"), ' ', $_POST['DetailComment']);
 
 
@@ -39,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         DateHiring = '$fecha_ingreso', SIGN = '$firmo_contrato', 
         lodging = '$hospedaje', Proyect = '$proyecto', type = '$tipo', 
         classification = '$clasificacion', SSN = '$ssn', DirectDeposit = '$deposito_directo', 
-        Comments = '$comentario'
+        Comments = '$comentario', PayRate = '$payRate', Active = '$active'
     WHERE id = '$id'";;
 
     // Ejecutar la consulta

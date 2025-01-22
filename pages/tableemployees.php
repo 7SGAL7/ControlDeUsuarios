@@ -46,13 +46,13 @@
                 <thead>
                     <tr>
                         <th>Número Trabajador</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
+                        <th>Nombre(s)</th>
+                        <th>Apellido(s)</th>
                         <th>Correo</th>
+                        <th>Teléfono</th>
                         <th>Proyecto</th>
-                        <th>Fecha de ingreso</th>
                         <th>Firma contrato</th>
-                        <th>Tipo</th>
+                        <th>Pay Rate</th>
                         <th>Clasificación</th>
                         <th></th>
                     </tr>
@@ -67,12 +67,8 @@
                         <td><?php echo $row['Name']; ?></td>
                         <td><?php echo $row['LastName']; ?></td>
                         <td><?php echo $row['Email']; ?></td>
+                        <td><?php echo $row['Phone'];?></td>
                         <td><?php echo $row['Proyect']; ?></td>
-                        <td><?php 
-                        $fecha_original = $row['DateHiring']; 
-                        $fecha_objeto = DateTime::createFromFormat('Y-m-d', $fecha_original);
-                        echo $fecha_objeto->format('m/d/Y'); 
-                        ?></td>
                         <td><?php 
                             if($row['SIGN']){
                                 echo "SI";
@@ -80,10 +76,10 @@
                                 echo "NO";
                             }; 
                         ?></td>
-                        <td><?php echo $row['type']; ?></td>
+                        <td><?php echo $row['PayRate']; ?></td>
                         <td><?php echo $row['classification']; ?></td>
                         <td>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#InfoEmployee" onclick="verDetalles('<?php echo $row['Name'];?>', '<?php echo $row['LastName'];?>', '<?php echo $row['Phone']; ?>', '<?php echo $row['Birthdate']; ?>', '<?php echo $row['Email']; ?>', '<?php echo $row['City']; ?>', '<?php echo $row['Matricula']; ?>', '<?php echo $row['Proyect']; ?>', '<?php echo $row['SIGN']; ?>', '<?php echo $row['DateHiring']; ?>', '<?php echo $row['Address']; ?>', '<?php echo $row['type']; ?>', '<?php echo $row['classification']; ?>', '<?php echo $row['lodging']; ?>', '<?php echo $row['SSN']; ?>', '<?php echo $row['DirectDeposit']; ?>', '<?php echo $row['Comments']; ?>', '<?php echo $row['id']; ?>')">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#InfoEmployee" onclick="verDetalles('<?php echo $row['Name'];?>', '<?php echo $row['LastName'];?>', '<?php echo $row['Phone']; ?>', '<?php echo $row['Birthdate']; ?>', '<?php echo $row['Email']; ?>', '<?php echo $row['City']; ?>', '<?php echo $row['Matricula']; ?>', '<?php echo $row['Proyect']; ?>', '<?php echo $row['SIGN']; ?>', '<?php echo $row['DateHiring']; ?>', '<?php echo $row['Address']; ?>', '<?php echo $row['type']; ?>', '<?php echo $row['classification']; ?>', '<?php echo $row['lodging']; ?>', '<?php echo $row['SSN']; ?>', '<?php echo $row['DirectDeposit']; ?>', '<?php echo $row['Comments']; ?>', '<?php echo $row['id']; ?>', '<?php echo $row['PayRate']; ?>', '<?php echo $row['Active']; ?>')">
                                 Detalles
                             </button>
                         </td>
@@ -118,11 +114,11 @@
                         <form id="formUsuario" action="controller/controllerGuardarEmpleado.php" method="POST">
                             <input type="hidden" name="detalleID" id="detalleID">
                             <div class="mb-3">
-                                <label class="form-label" for="detalleNombre">Nombre:</label>
+                                <label class="form-label" for="detalleNombre">Nombre(s):</label>
                                 <input class="form-control" type="text" id="detalleNombre" name="detalleNombre">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" for="detalleApellido">Apellido:</label>
+                                <label class="form-label" for="detalleApellido">Apellido(s):</label>
                                 <input class="form-control" type="text" id="detalleApellido" name="detalleApellido">
                             </div>
                             <div class="mb-3">
@@ -144,7 +140,7 @@
                             </div>
                             <div class="d-flex">
                                 <div class="p-2 flex-fill">
-                                    <label class="form-label" for="detalleFecha">Fecha de Nacimiento::<small></small></label>
+                                    <label class="form-label" for="detalleFecha">Fecha de Nacimiento:<small></small></label>
                                     <input class="form-control" type="date" id="detalleFecha" name="detalleFecha">
                                 </div>
                                 <div class="p-2 flex-fill">
@@ -184,12 +180,27 @@
                                 <label class="form-label" for="detalleSSN">SSN</label>
                                 <input class="form-control" type="text" id="detalleSSN" name="detalleSSN">
                             </div>
-                            <div class="p-2 flex-fill">
-                                <label class="form-label" for="detaildeposito">Deposito directo:</label>
+                            
+
+                            <div class="d-flex">
+                                <div class="p-2 flex-fill">
+                                    <label class="form-label" for="detaildeposito">Deposito directo:</label>
                                     <select class="form-select" aria-label="Default select example" id = "detaildeposito" name="detaildeposito">
                                         <option value="0">No</option>
                                         <option value="1">Si</option>
                                     </select>
+                                </div>
+                                <div class="p-2 flex-fill">
+                                    <label class="form-label" for="detailactivo">Activo:</label>
+                                    <select class="form-select" aria-label="Default select example" id = "detailactivo" name="detailactivo">
+                                        <option value="0">No</option>
+                                        <option value="1">Si</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="detallePayRate">Pay Rate</label>
+                                <input class="form-control" type="number" id="detallePayRate" name="detallePayRate">
                             </div>
 
                             <div>

@@ -118,12 +118,12 @@
             <h2>Registro de Trabajadores</h2>
         </div>
         <div class="mb-3">
-            <label for="name" class="form-label">Nombre</label>
+            <label for="name" class="form-label">Nombre(s)</label>
             <input type="text" id="name" name="name" class="form-control" required>
         </div>
 
         <div class="mb-3">
-            <label for="lastname" class="form-label">Apellido</label>
+            <label for="lastname" class="form-label">Apellido(s)</label>
             <input type="text" id="lastname" name="lastname" class="form-control" required>
         </div>
 
