@@ -33,6 +33,8 @@
             <th>Hospedaje</th>
             <th>SSN</th>
             <th>Deposito directo</th>
+            <th>Pay Rate</th>
+            <th>Activo</th>
             <th>Comentarios</th>
         </tr>
     </thead>
@@ -76,6 +78,13 @@
             <td><?php echo $row['SSN']; ?></td>
             <td><?php 
             if($row['DirectDeposit']){
+                echo "SI";
+            }else{
+                echo "NO";
+            };?></td>
+            <td><?php echo $row['PayRate']; ?></td>
+            <td><?php 
+            if($row['Active']){
                 echo "SI";
             }else{
                 echo "NO";
