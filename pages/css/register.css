@@ -85,9 +85,10 @@ footer {
     }
 }
 
-
 @media (max-width: 1024px) {
-    
+    .espaciado-main{
+        height: 200px;
+     }
 }
 
 /* Estilos para pantallas pequeñas (hasta 600px de ancho) */
