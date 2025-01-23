@@ -4,8 +4,6 @@ require '../../bd/conection.php';
 // Verificar si se han recibido los datos del formulario
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Capturar los datos del formulario
-    
-    
     $sql_id = "SELECT id FROM employees ORDER BY id DESC LIMIT 1;";
     $result = $conn->query($sql_id);
 
