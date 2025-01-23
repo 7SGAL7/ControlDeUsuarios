@@ -125,6 +125,10 @@ $conn->close();
 
 // Si hay errores, mostrarlos
 if (!empty($errores)) {
-    echo "<p style='color: red;'>" . $error[0] . "</p>";
+
+    foreach ($errores as $error) {
+        echo "<p style='color: red;'>" . $error . "</p>";
+    }
+   
 }
 ?>
