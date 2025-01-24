@@ -1,8 +1,9 @@
 <?php
-require '../bd/conection.php';
+    require '../../bd/conection.php';
 
-// Variable para almacenar errores
-
+    // Variable para almacenar errores
+    $errores = [];
+    $nombre = $apellido = $fecha_nacimiento = $ciudad = $email = $telefono = '';
 
 // Verificar si el formulario fue enviado
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -111,17 +112,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Ejecutar la consulta
         if ($conn->query($sql) === TRUE) {
             // Guardar el dato en la sesión
+            session_start();
             $_SESSION['matriz'] = $matriz;
-            header("Location: sucessful.php");
+            header("Location: ../sucessful.php");
             exit();
         } else {
             $errores[] = "Hubo un error al registrar los datos. Por favor, intenta nuevamente.";
         }
     }
 }
-
-// Cerrar la conexión a la base de datos
-$conn->close();
 
 // Si hay errores, mostrarlos
 if (!empty($errores)) {
@@ -131,4 +130,7 @@ if (!empty($errores)) {
     }
    
 }
+
+// Cerrar la conexión a la base de datos
+$conn->close();
 ?>
