@@ -1,29 +1,36 @@
 <?php
-    require '../../bd/conection.php';
+    require '../bd/conection.php';
 
     // Variable para almacenar errores
     $errores = [];
-    $nombre = $apellido = $fecha_nacimiento = $ciudad = $email = $telefono = '';
+    $nombre = $apellido = $fecha_nacimiento = $ciudad = $email = $telefono = $confirmemail = $confirmtelefono = '';
+    $nombreErr = $apellidoErr = $fechaErr = $ciudadErr = $emailErr = $telefonoErr = $confirmemailErr = $confirmtelefonoErr = $privacidadError = "";
 
 // Verificar si el formulario fue enviado
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validación del campo 'name' (Nombre)
     if (empty($_POST['name'])) {
-        $errores[] = "El nombre es obligatorio.";
+        $nombreErr = "El nombre es obligatorio.";
+        $errores[] = $nombreErr;
     } else {
+        $nombreErr = '';
         $nombre = strtoupper($conn->real_escape_string(trim($_POST['name'])));
     }
 
     // Validación del campo 'lastname' (Apellido)
     if (empty($_POST['lastname'])) {
-        $errores[] = "El apellido es obligatorio.";
+        $apellidoErr = "El apellido es obligatorio.";
+        $errores[] = $apellidoErr;
+        
     } else {
+        $apellidoErr = '';
         $apellido = strtoupper($conn->real_escape_string(trim($_POST['lastname'])));
     }
 
     // Validación de la fecha de nacimiento (Fecha de Nacimiento)
     if (empty($_POST['dob'])) {
-        $errores[] = "La fecha de nacimiento es obligatoria.";
+        $fechaErr = "La fecha de nacimiento es obligatoria.";
+        $errores[] = $fechaErr;
     } else {
         $fecha_nacimiento = $_POST['dob'];
         // Verificar si la edad es mayor o igual a 18 años
@@ -31,61 +38,85 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $hoy = new DateTime();
         $edad = $hoy->diff($fechaNacimiento)->y;
         if ($edad < 18) {
-            $errores[] = "Debes tener al menos 18 años.";
+            $fechaErr = "Debes tener al menos 18 años.";
+            $errores[] = $fechaErr;
+        }else{
+            $fechaErr = '';
         }
     }
 
     // Validación de la ciudad
     if (empty($_POST['city'])) {
-        $errores[] = "La ciudad es obligatoria.";
+        $ciudadErr = "La ciudad es obligatoria.";
+        $errores[] = $ciudadErr;
     } else {
+        $ciudadErr = '';
         $ciudad = strtoupper($conn->real_escape_string(trim($_POST['city'])));
     }
 
     // Validación del correo electrónico
     if (empty($_POST['email'])) {
-        $errores[] = "El correo electrónico es obligatorio.";
+        $emailErr = "El correo electrónico es obligatorio.";
+        $errores[] =   $emailErr ;
     } else {
         $email = strtoupper($conn->real_escape_string(trim($_POST['email'])));
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errores[] = "El correo electrónico no es válido.";
+            $emailErr = "El correo electrónico no es válido.";
+            $errores[] =   $emailErr;
+        }else{
+            $emailErr = '';
         }
     }
 
     // Validación de la confirmación de correo electrónico
     if (empty($_POST['emailConfirmar'])) {
-        $errores[] = "Debes confirmar tu correo electrónico.";
+        $confirmemailErr = "Debes confirmar tu correo electrónico.";
+        $errores[] = $confirmemailErr;
     } else {
-        $emailConfirmar = strtoupper($conn->real_escape_string(trim($_POST['emailConfirmar'])));
-        if ($email !== $emailConfirmar) {
-            $errores[] = "Los correos electrónicos no coinciden.";
+        $confirmemail = strtoupper($conn->real_escape_string(trim($_POST['emailConfirmar'])));
+        if ($email !== $confirmemail) {
+            $confirmemailErr = "Los correos electrónicos no coinciden.";
+            $errores[] = $confirmemailErr;
+        }else{
+            $confirmemailErr = '';
         }
     }
 
     // Validación del teléfono
     if (empty($_POST['phone'])) {
-        $errores[] = "El teléfono es obligatorio.";
+        $telefonoErr = "El teléfono es obligatorio.";
+        $errores[] = $telefonoErr;
     } else {
         $telefono = $conn->real_escape_string(trim($_POST['phone']));
         // Verificación de formato de teléfono (usaremos un formato básico)
         if (!preg_match("/^\d{10}$/", $telefono)) {
-            $errores[] = "El teléfono debe tener 10 dígitos.";
+            $telefonoErr ="El teléfono debe tener 10 dígitos.";
+            $errores[] = $telefonoErr;
+        }else{
+            $telefonoErr = '';
         }
     }
 
     // Validación de la confirmación de teléfono
     if (empty($_POST['phoneConfirmar'])) {
-        $errores[] = "Debes confirmar tu número de teléfono.";
+        $confirmtelefonoErr = "Debes confirmar tu número de teléfono.";
+        $errores[] = $confirmtelefonoErr;
     } else {
-        $telefonoConfirmar = $conn->real_escape_string(trim($_POST['phoneConfirmar']));
-        if ($telefono !== $telefonoConfirmar) {
-            $errores[] = "Los números de teléfono no coinciden.";
+        $confirmtelefono = $conn->real_escape_string(trim($_POST['phoneConfirmar']));
+        if ($telefono !== $confirmtelefono) {
+            $confirmtelefonoErr = "Los números de teléfono no coinciden.";
+            $errores[] = $confirmtelefonoErr;
+        }else{
+            $confirmtelefonoErr = '';
         }
     }
 
     // Validación de la casilla de aceptación de privacidad
     if (!(isset($_POST['flexCheckPrivacidad']) && $_POST['flexCheckPrivacidad'] == '1')) {
-        $errores[] = "Debes aceptar el Aviso de Privacidad.";
+        $privacidadError = "Debes aceptar el Aviso de Privacidad.";
+        $errores[] = $privacidadError;
+    }else{
+       $privacidadError = '';
     }
 
     // Si no hay errores, proceder con la inserción en la base de datos
@@ -114,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Guardar el dato en la sesión
             session_start();
             $_SESSION['matriz'] = $matriz;
-            header("Location: ../sucessful.php");
+            header("Location: sucessful.php");
             exit();
         } else {
             $errores[] = "Hubo un error al registrar los datos. Por favor, intenta nuevamente.";
@@ -122,15 +153,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
+/*
 // Si hay errores, mostrarlos
 if (!empty($errores)) {
-
     foreach ($errores as $error) {
         echo "<p style='color: red;'>" . $error . "</p>";
     }
    
-}
+}*/
 
-// Cerrar la conexión a la base de datos
-$conn->close();
+    // Cerrar la conexión a la base de datos
+    $conn->close();
 ?>
