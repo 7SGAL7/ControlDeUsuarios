@@ -95,7 +95,3 @@
     </tbody>
 </table>
 
-
-<?php
-
-?>

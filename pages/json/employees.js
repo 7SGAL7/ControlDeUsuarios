@@ -24,17 +24,65 @@ function verDetalles(nombre, apellido, telefono, fechaNacimiento, correo, ciudad
     document.getElementById('detailactivo').value = active;
 }
 
-
-var table = new DataTable('#table-employees', {
+/*
+new DataTable('#table-employees', {
     language: {
         url: '//cdn.datatables.net/plug-ins/2.2.1/i18n/es-ES.json',
     },
     order: []
+});*/
+
+$(document).ready(function () {
+    $('#table-employees').DataTable({
+        dom: 'QBfrtip',  // 'Q' habilita el SearchBuilder
+        searchBuilder: true, // Activa el filtrado avanzado
+        buttons: [
+            {
+                extend: 'csv',
+                text: 'Exportar CSV',
+                filename: 'Empleados_Filtrados', // Nombre del archivo
+                bom: true, // Agrega BOM para evitar problemas con caracteres especiales
+                exportOptions: {
+                    modifier: {
+                        search: 'applied' // Exporta solo filas filtradas
+                    },
+                    columns: [0, 1, 2] // Exporta todas las columnas
+                },
+                customize: function (csv) {
+                    return "Empleado,Edad del Trabajador,Cargo\n" + csv.split("\n").slice(1).join("\n");
+                }
+            }
+        ],
+        language: {
+            url: '//cdn.datatables.net/plug-ins/2.2.1/i18n/es-ES.json',
+            searchBuilder: {
+                button: "Filtro avanzado",
+                title: "Filtro avanzado"
+            }
+        },
+        order: []
+    });
 });
 
+table.searchBuilder.container().prependTo(table.table().container());
 
 document.querySelector('.btn-update').addEventListener('click', function() {
     document.getElementById('formUsuario').submit();
 });
 
 
+document.addEventListener('DOMContentLoaded', function () {
+    let confirmModal = document.getElementById('confirmModal');
+
+    confirmModal.addEventListener('hidden.bs.modal', function () {
+        // Asegurar que el modal de InfoEmployee también se cierra si quedó abierto
+        let infoModal = new bootstrap.Modal(document.getElementById('InfoEmployee'));
+        infoModal.hide();
+    });
+});
+
+
+function EliminarTrabajador(){
+    let userId = document.getElementById("detalleID").value;
+    document.getElementById("deleteUserId").value = userId;
+}

@@ -19,14 +19,25 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link href="librery/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="librery/css/dataTables.bootstrap5.css" rel="stylesheet" type="text/css">  
+        <link rel="stylesheet" href="https://cdn.datatables.net/searchbuilder/1.7.0/css/searchBuilder.dataTables.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">  
         <!-- Bootstrap core JS -->
         <script src="librery/js/bootstrap.bundle.min.js"></script>
         <script src="librery/js/jquery-3.7.1.js"></script>
         <script src="librery/js/dataTables.js"></script>
         <script src="librery/js/dataTables.bootstrap5.js"></script>
-        
-
+        <script src="https://cdn.datatables.net/searchbuilder/1.7.0/js/dataTables.searchBuilder.min.js"></script>
+        <script>
+        function confirmarAccion() {
+            let confirmacion = confirm("¿Estás seguro de realizar esta acción?");
+            if (confirmacion) {
+                alert("Acción confirmada.");
+                // Aquí puedes agregar la acción a ejecutar si el usuario confirma
+            } else {
+                alert("Acción cancelada.");
+            }
+            }
+        </script>
     </head>
     <body>
 
@@ -207,7 +218,16 @@
                                 <label class="form-label" for="DetailComment">Comentario:</label>
                                 <textarea class="form-control" id="DetailComment" name="DetailComment"></textarea>
                             </div>
+
+                            
+
                         </form>
+                        <br>
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal" onclick="$('#InfoEmployee').modal('hide'); EliminarTrabajador()">
+                                Eliminar
+                            </button>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -217,9 +237,32 @@
             </div>
         </div>
         
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script src = "json/employees.js">                  
 
+        <!-- Modal de Confirmación -->
+        <div class="modal fade" id="confirmModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Eliminar trabajador</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que quieres eliminar al trabajador?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form action="controller/controllerEliminarTrabajador.php" method="POST">
+                            <input type="hidden" id="deleteUserId" name="deleteUserId">
+                            <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src = "json/employees.js">                  
         </script>
 
 
