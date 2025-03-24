@@ -47,7 +47,6 @@
  
       <div class="checkbox mb-3">
           <a href="pages/register.php">Registrate</a>
-        
       </div>
         
         <div class="d-flex justify-content-center">

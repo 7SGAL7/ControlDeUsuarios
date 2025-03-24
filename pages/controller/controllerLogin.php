@@ -5,6 +5,7 @@ if(!empty($_POST["login_form"])){
     if (!empty($_POST["username"]) && !empty($_POST["password"])) {
         $user = $_POST["username"];
         $password = $_POST["password"];
+        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
         $acceso = "se accedio correctamente";
 
         if (isset($_POST['remember'])) {
@@ -28,7 +29,7 @@ if(!empty($_POST["login_form"])){
             }else{
                 echo "
                 <div class='position-absolute alert alert-danger alert-danger fade show  mb-3' role='alert' >
-                <strong>Usuario o contraseña incorrectos.
+                <strong>Usuario o contraseña incorrectos. " . $hashed_password ."
                 <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
                 </div>
                 ";
@@ -51,7 +52,7 @@ if(!empty($_POST["login_form"])){
                 }else{
                     echo "
                     <div class='position-absolute alert alert-danger alert-danger fade show  mb-3' role='alert' >
-                    <strong>Usuario o contraseña incorrectos.
+                    <strong>Usuario o contraseña incorrectos. " . $hashed_password ."
                     <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
                     </div>
                     ";
@@ -59,7 +60,7 @@ if(!empty($_POST["login_form"])){
             }else{
                 echo "
                 <div class='position-absolute alert alert-danger alert-danger fade show  mb-3' role='alert' >
-                <strong>Usuario o contraseña incorrectos.
+                <strong>Usuario o contraseña incorrectos. " . $hashed_password ."
                 <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
                 </div>
                 ";
