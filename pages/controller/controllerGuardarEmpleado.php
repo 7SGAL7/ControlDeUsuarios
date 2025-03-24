@@ -7,9 +7,7 @@
 
 // Verificar si el formulario ha sido enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     require '../../bd/conection.php';
-    echo "<script>console.log('Este es un mensaje desde PHP');</script>";
     // Obtener los datos del formulario
     $id = $_POST['detalleID'];
     $nombre = $_POST['detalleNombre'];
@@ -29,11 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $deposito_directo = $_POST['detaildeposito'];
     $payRate = $_POST['detallePayRate'];
     $active = $_POST['detailactivo'];
-
     $comentario = str_replace(array("\r", "\n"), ' ', $_POST['DetailComment']);
-
-
-
 
     // Preparar la consulta SQL para insertar los datos
     $sql = "UPDATE employees 

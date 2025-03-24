@@ -27,17 +27,7 @@
         <script src="librery/js/dataTables.js"></script>
         <script src="librery/js/dataTables.bootstrap5.js"></script>
         <script src="https://cdn.datatables.net/searchbuilder/1.7.0/js/dataTables.searchBuilder.min.js"></script>
-        <script>
-        function confirmarAccion() {
-            let confirmacion = confirm("¿Estás seguro de realizar esta acción?");
-            if (confirmacion) {
-                alert("Acción confirmada.");
-                // Aquí puedes agregar la acción a ejecutar si el usuario confirma
-            } else {
-                alert("Acción cancelada.");
-            }
-            }
-        </script>
+
     </head>
     <body>
 
@@ -53,6 +43,7 @@
         <div class="container">
             <h1>SISTEMA DE REGISTRO DE TRABAJADORES</h1>
             <a class="btn btn-outline-success" href ="controller/controllerGenerarExcel.php"><img src = "icon/flecha-descarga.png" style = "width:20px"></i> Descargar en Excel</a>
+            <a class="btn btn-outline-success" href ="GenerarExcelParcial.php"><img src = "icon/flecha-descarga.png" style = "width:20px"></i> Descargar parcial</a>
             <table id="table-employees">
                 <thead>
                     <tr>
@@ -90,7 +81,7 @@
                         <td><?php echo $row['PayRate']; ?></td>
                         <td><?php echo $row['classification']; ?></td>
                         <td>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#InfoEmployee" onclick="verDetalles('<?php echo $row['Name'];?>', '<?php echo $row['LastName'];?>', '<?php echo $row['Phone']; ?>', '<?php echo $row['Birthdate']; ?>', '<?php echo $row['Email']; ?>', '<?php echo $row['City']; ?>', '<?php echo $row['Matricula']; ?>', '<?php echo $row['Proyect']; ?>', '<?php echo $row['SIGN']; ?>', '<?php echo $row['DateHiring']; ?>', '<?php echo $row['Address']; ?>', '<?php echo $row['type']; ?>', '<?php echo $row['classification']; ?>', '<?php echo $row['lodging']; ?>', '<?php echo $row['SSN']; ?>', '<?php echo $row['DirectDeposit']; ?>', '<?php echo $row['Comments']; ?>', '<?php echo $row['id']; ?>', '<?php echo $row['PayRate']; ?>', '<?php echo $row['Active']; ?>')">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#InfoEmployee" onclick="verDetalles('<?php echo $row['Name'];?>', '<?php echo $row['LastName'];?>', '<?php echo $row['Phone']; ?>', '<?php echo $row['Birthdate']; ?>', '<?php echo $row['Email']; ?>', '<?php echo $row['City']; ?>', '<?php echo $row['Matricula']; ?>', '<?php echo $row['Proyect']; ?>', '<?php echo $row['SIGN']; ?>', '<?php echo $row['DateHiring']; ?>', '<?php echo $row['Address']; ?>', '<?php echo $row['type']; ?>', '<?php echo $row['classification']; ?>', '<?php echo $row['lodging']; ?>', '<?php echo $row['SSN']; ?>', '<?php echo $row['DirectDeposit']; ?>', '<?php echo $row['Comments']; ?>', '<?php echo $row['id']; ?>', '<?php echo $row['PayRate']; ?>', '<?php echo $row['Active']; ?>','<?php echo $row['foto']; ?>')">
                                 Detalles
                             </button>
                         </td>
@@ -124,6 +115,9 @@
                     <div class="modal-body">
                         <form id="formUsuario" action="controller/controllerGuardarEmpleado.php" method="POST">
                             <input type="hidden" name="detalleID" id="detalleID">
+                            <div class="image-preview mb-3" id="imagePreview">
+                                <img id="previewImg" alt="Vista previa">
+                            </div>
                             <div class="mb-3">
                                 <label class="form-label" for="detalleNombre">Nombre(s):</label>
                                 <input class="form-control" type="text" id="detalleNombre" name="detalleNombre">
@@ -218,11 +212,9 @@
                                 <label class="form-label" for="DetailComment">Comentario:</label>
                                 <textarea class="form-control" id="DetailComment" name="DetailComment"></textarea>
                             </div>
-
+                            <br>
                             
-
                         </form>
-                        <br>
                         <div class="d-flex justify-content-center">
                             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal" onclick="$('#InfoEmployee').modal('hide'); EliminarTrabajador()">
                                 Eliminar
@@ -231,7 +223,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary btn-update">Guardar</button>
+                        <button type="submit" class="btn btn-primary btn-update" name="guardarEmpleado" onclick="guardarEmpleado()">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -264,7 +256,5 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src = "json/employees.js">                  
         </script>
-
-
     </body>
 </html>

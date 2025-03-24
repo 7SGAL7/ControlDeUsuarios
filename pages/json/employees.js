@@ -1,4 +1,4 @@
-function verDetalles(nombre, apellido, telefono, fechaNacimiento, correo, ciudad, matricula, proyecto, firma, ingreso, direccion, tipo, clasificacion, hospedaje, ssn, deposito, notas, id, payrate, active) {
+function verDetalles(nombre, apellido, telefono, fechaNacimiento, correo, ciudad, matricula, proyecto, firma, ingreso, direccion, tipo, clasificacion, hospedaje, ssn, deposito, notas, id, payrate, active, foto) {
     // Asignar los valores a los elementos correspondientes en el modal
     document.getElementById('detalleNombre').value = nombre;
     document.getElementById('detalleApellido').value = apellido;
@@ -22,6 +22,13 @@ function verDetalles(nombre, apellido, telefono, fechaNacimiento, correo, ciudad
     document.getElementById('detalleID').value = id;
     document.getElementById('detallePayRate').value = payrate;
     document.getElementById('detailactivo').value = active;
+    if (!foto || foto.trim() === "") {
+        foto = "img/employeeicon.png"; // Imagen por defecto
+    } else {
+        foto = foto.replace("../", ""); // Remover '../' si la ruta existe
+    }
+    document.getElementById('previewImg').src = foto;
+    console.log(foto);
 }
 
 /*
@@ -64,7 +71,7 @@ $(document).ready(function () {
     });
 });
 
-table.searchBuilder.container().prependTo(table.table().container());
+//table.searchBuilder.container().prependTo(table.table().container());
 
 document.querySelector('.btn-update').addEventListener('click', function() {
     document.getElementById('formUsuario').submit();
@@ -85,4 +92,8 @@ document.addEventListener('DOMContentLoaded', function () {
 function EliminarTrabajador(){
     let userId = document.getElementById("detalleID").value;
     document.getElementById("deleteUserId").value = userId;
+}
+
+function guardarEmpleado() {
+    document.getElementById("formUsuario").submit();
 }

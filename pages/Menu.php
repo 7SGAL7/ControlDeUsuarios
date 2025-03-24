@@ -56,6 +56,22 @@ body {
           <br>
           <div class="navbar seleccionar bg-body-tertiary p-2">
             <div class="container-fluid">
+              <a class="navbar-brand" href="CambioPassword.php">    
+                Cambiar contraseña
+              </a>
+            </div>
+          </div>
+          <br>
+          <div class="navbar seleccionar bg-body-tertiary p-2">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="Proyectos.php">    
+                Notificar proyecto
+              </a>
+            </div>
+          </div>
+          <br>
+          <div class="navbar seleccionar bg-body-tertiary p-2">
+            <div class="container-fluid">
               <a class="navbar-brand" href="controller/controllerCerrarSesion.php">    
                 Cerrar sesión
               </a>

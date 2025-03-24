@@ -17,6 +17,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="css/register.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
     <form  method="POST" class="mt-4" id = "form-register" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
@@ -82,16 +83,21 @@
             <div id="phoneConfirmar-error" style="color: red; display: none;">Los teléfonos no coinciden.</div>
             <span style="color:red;"><?php echo $confirmtelefonoErr;?></span>
         </div>
+        <!-- Agregar reCAPTCHA -->
+        <div class="mb-3 text-center">
+            <div class="g-recaptcha" data-sitekey="TU_CLAVE_DEL_SITIO"></div>
+        </div>
         <div class="form-check ">
             <input class="form-check-input" type="checkbox" value="1" id="flexCheckPrivacidad" name = "flexCheckPrivacidad" required>
                 <label class="form-check-label" for="flexCheckPrivacidad">
                 <p>He leído y acepto el Aviso de Privacidad.</p>
                 </label>
                 <div id="priv-error" style="color: red; display: none;">Debes aceptar el Aviso de Privacidad.</div>
-                
         </div>
         <button type="submit" class="btn btn-primary w-100">Registrar y Continuar</button>
-        
+        <div id="captcha-error" style="color: red;">
+            <?php echo isset($captchaErr) ? $captchaErr : ''; ?>
+        </div>
     </form>
     <div class="mt-1 py-1">
         <a href="../login.php">Ya tengo usuario.</a>

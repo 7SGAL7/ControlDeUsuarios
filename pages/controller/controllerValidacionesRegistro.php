@@ -8,6 +8,7 @@
 
 // Verificar si el formulario fue enviado
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
     // Validación del campo 'name' (Nombre)
     if (empty($_POST['name'])) {
         $nombreErr = "El nombre es obligatorio.";
@@ -119,6 +120,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
        $privacidadError = '';
     }
 
+
+    // 🔍 **Validar si el correo ya existe**
+    $sql_check_email = "SELECT id FROM employees WHERE Email = ?";
+    $stmt_check_email = $conn->prepare($sql_check_email);
+    $stmt_check_email->bind_param("s", $email);
+    $stmt_check_email->execute();
+    $stmt_check_email->store_result();
+
+    if ($stmt_check_email->num_rows > 0) {
+        $emailErr = "El correo ya está registrado.";
+        $errores[] = $emailErr;
+    }
+
+    // 🔍 **Validar si el teléfono ya existe**
+    $sql_check_phone = "SELECT id FROM employees WHERE Phone = ?";
+    $stmt_check_phone = $conn->prepare($sql_check_phone);
+    $stmt_check_phone->bind_param("s", $telefono);
+    $stmt_check_phone->execute();
+    $stmt_check_phone->store_result();
+
+    if ($stmt_check_phone->num_rows > 0) {
+        $telefonoErr = "El teléfono ya está registrado.";
+        $errores[] =  $telefonoErr;
+    }
+
     // Si no hay errores, proceder con la inserción en la base de datos
     if (empty($errores)) {
         // Obtener el último ID de empleado y crear el nuevo ID
@@ -136,9 +162,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $matriz = substr($nombre, 0, 1) . substr($apellido, 0, 1) . str_pad($id, 3, "0", STR_PAD_LEFT);
         $dateWork = date("Y-m-d");
 
+        // 🔐 Generar una contraseña aleatoria segura
+        function generarContrasena($longitud = 5) {
+            $caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+            return substr(str_shuffle($caracteres), 0, $longitud);
+        }
+
+        $password_plana = generarContrasena();  // Contraseña sin encriptar
+        $password_hash = password_hash($password_plana, PASSWORD_DEFAULT);
+
+
+        $sql = "INSERT INTO employees (Name, LastName, Matricula, Password, Birthdate, Phone, DateHiring, Email, City) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssssssss", $nombre, $apellido, $matriz, $password_hash, $fecha_nacimiento, $telefono, $dateWork, $email, $ciudad);
+
+        if ($stmt->execute()) {
+            session_start();
+            $_SESSION['matriz'] = $matriz;
+            header("Location: sucessful.php");
+            exit();
+        } else {
+            $errores[] = "Hubo un error al registrar los datos. Por favor, intenta nuevamente.";
+        }
+
+        /*
         // Preparar la consulta SQL para insertar los datos
         $sql = "INSERT INTO employees(Name, LastName, Matricula, Password, Birthdate, Phone, DateHiring, Email, City) 
-                VALUES ('$nombre', '$apellido', '$matriz', '', '$fecha_nacimiento', '$telefono', '$dateWork', '$email', '$ciudad')";
+                VALUES ('$nombre', '$apellido', '$matriz', $password_hash, '$fecha_nacimiento', '$telefono', '$dateWork', '$email', '$ciudad')";
 
         // Ejecutar la consulta
         if ($conn->query($sql) === TRUE) {
@@ -149,7 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         } else {
             $errores[] = "Hubo un error al registrar los datos. Por favor, intenta nuevamente.";
-        }
+        }*/
     }
 }
 
