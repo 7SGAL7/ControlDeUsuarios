@@ -1,26 +1,24 @@
 <?php
-require 'vendor/autoload.php';
-
-use Twilio\Rest\Client;
+require 'services/SmsService.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $empleados = $_POST['empleados'];
-    $mensaje = $_POST['mensaje'];
+    $clientes = $_POST["clientes"] ?? [];
+    $mensaje = trim($_POST["mensaje"]);
 
-    $sid = 'TU_TWILIO_SID'; 
-    $token = 'TU_TWILIO_TOKEN'; 
-    $twilio = new Client($sid, $token);
-
-    foreach ($empleados as $emp) {
-        $twilio->messages->create(
-            $emp['telefono'],
-            [
-                'from' => 'TU_NUMERO_TWILIO',
-                'body' => $mensaje
-            ]
-        );
+    if (empty($clientes) || empty($mensaje)) {
+        echo json_encode(["status" => "error", "message" => "Cliente o mensaje vacíos."]);
+        exit;
     }
 
-    echo "Mensajes SMS enviados exitosamente.";
+    try{
+        $telefonos = array_column($clientes, 'telefono');
+        $smsService = new SmsService();
+        $respuesta = $smsService->enviarSms($telefonos, $mensaje);
+        echo $respuesta;
+    }catch (Exception $e){
+        echo json_encode(["status" => "error", "message" => "Error al enviar."]);
+    }
+
 }
+
 ?>

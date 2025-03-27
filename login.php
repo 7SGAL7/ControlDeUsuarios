@@ -48,6 +48,9 @@
       <div class="checkbox mb-3">
           <a href="pages/register.php">Registrate</a>
       </div>
+      <div class="checkbox mb-3">
+          <a href="pages/trabajadores/recuperacionpassword.php">Olvidé mi contraseña</a>
+      </div>
         
         <div class="d-flex justify-content-center">
             <?php 

@@ -85,7 +85,10 @@
         </div>
         <!-- Agregar reCAPTCHA -->
         <div class="mb-3 text-center">
-            <div class="g-recaptcha" data-sitekey="TU_CLAVE_DEL_SITIO"></div>
+            <div class="g-recaptcha" data-sitekey="6Lf31P4qAAAAANzWftDv54ugESW3LZa2dFDYSOF5"></div>
+        </div>
+        <div id="captcha-error" style="color: red;">
+            <?php echo isset($captchaError) ? $captchaError : ''; ?>
         </div>
         <div class="form-check ">
             <input class="form-check-input" type="checkbox" value="1" id="flexCheckPrivacidad" name = "flexCheckPrivacidad" required>

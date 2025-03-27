@@ -178,7 +178,7 @@ while ($row = $result->fetch_assoc()) {
                     return;
                 }
 
-                $.post("controllerEnviarEmail.php", { clientes: clientes, mensaje: mensaje }, function (respuesta) {
+                $.post("controller/controllerEnviarEmail.php", { clientes: clientes, mensaje: mensaje }, function (respuesta) {
                     Swal.fire("Éxito", respuesta, "success");
                 }).fail(function () {
                     Swal.fire("Error", "Hubo un problema al enviar el correo.", "error");
@@ -195,7 +195,7 @@ while ($row = $result->fetch_assoc()) {
                     return;
                 }
 
-                $.post("controllerEnviarSMS.php", { clientes: clientes, mensaje: mensaje }, function (respuesta) {
+                $.post("controller/controllerEnviarSMS.php", { clientes: clientes, mensaje: mensaje }, function (respuesta) {
                     Swal.fire("Éxito", respuesta, "success");
                 }).fail(function () {
                     Swal.fire("Error", "Hubo un problema al enviar el SMS.", "error");

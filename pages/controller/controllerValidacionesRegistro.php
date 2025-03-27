@@ -1,13 +1,30 @@
 <?php
     require '../bd/conection.php';
+    require_once '../vendor/autoload.php';
+    use Twilio\Rest\Client;
 
     // Variable para almacenar errores
     $errores = [];
     $nombre = $apellido = $fecha_nacimiento = $ciudad = $email = $telefono = $confirmemail = $confirmtelefono = '';
-    $nombreErr = $apellidoErr = $fechaErr = $ciudadErr = $emailErr = $telefonoErr = $confirmemailErr = $confirmtelefonoErr = $privacidadError = "";
+    $nombreErr = $apellidoErr = $fechaErr = $ciudadErr = $emailErr = $telefonoErr = $confirmemailErr = $confirmtelefonoErr = $privacidadError = $captchaError = "";
 
 // Verificar si el formulario fue enviado
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+
+
+    $captcha = $_POST['g-recaptcha-response'];
+    $secretKey = "6Lf31P4qAAAAANgBTYE5X9CejiN4PFWEGSDyaYpU";
+
+    // Verificar con Google
+    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captcha");
+    $responseKeys = json_decode($response, true);
+
+    if (!$responseKeys["success"]) {
+        $captchaError = "reCAPTCHA no válido";
+        $errores[] = $captchaError;
+    }
+
 
     // Validación del campo 'name' (Nombre)
     if (empty($_POST['name'])) {
@@ -150,6 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Obtener el último ID de empleado y crear el nuevo ID
         $sql_id = "SELECT id FROM employees ORDER BY id DESC LIMIT 1;";
         $result = $conn->query($sql_id);
+        $telefonoLada = "+1" . $telefono;  
 
         if ($result->num_rows > 0) { 
             $row = $result->fetch_assoc();
@@ -175,8 +193,87 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql = "INSERT INTO employees (Name, LastName, Matricula, Password, Birthdate, Phone, DateHiring, Email, City) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+        $env = parse_ini_file(__DIR__ . '../../.env');
+        $twilioSid = $env['TWILIO_ACCOUNT_SID'];
+        $twilioToken = $env['TWILIO_AUTH_TOKEN'];
+        $twilioPhone = $env['TWILIO_PHONE_NUMBER'];
+
+        $sid    = $twilioSid;
+        $token  = $twilioToken;
+        $twilio = new Client($sid, $token);
+
+        $message = $twilio->messages
+            ->create($telefonoLada, // to
+                array(
+                "from" => $twilioPhone,
+                "body" => "Hola $nombre $apellido, bienvenido a Jemoworkers\n"
+                . "Tu cuenta ha sido creada con éxito.\n"
+                . "Número de trabajador: $matriz\n"
+                . "Contraseña: $password_plana\n"
+                . "¡Bienvenido al equipo!"
+                )
+            );
+        print($message->sid);
+        
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("sssssssss", $nombre, $apellido, $matriz, $password_hash, $fecha_nacimiento, $telefono, $dateWork, $email, $ciudad);
+
+        $para = $email; // Correo del nuevo empleado
+        $asunto = "¡Bienvenido a Jemoworkers, $nombre! 🎉";
+        
+        $numero_trabajador = $matriz; // Número de trabajador generado
+        $nombre_empleado = $nombre . $apellido; // Nombre del empleado
+        $empresa = "Jemowokers"; // Nombre de la empresa
+        $correo_contacto = "info@jemoworkers.com"; // Correo de contacto
+        $url_plataforma = "https://jemoworkers.com/ControlDeUsuarios/login.php"; // URL del portal de empleados
+        
+        // Mensaje en formato HTML
+        $mensaje = "
+        <html>
+        <head>
+            <title>Bienvenido a $empresa</title>
+        </head>
+        <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
+            <h2>¡Bienvenido a <span style='color: #007bff;'>$empresa</span>, $nombre_empleado! 🎉</h2>
+            <p>Estamos emocionados de que te unas a nuestro equipo. A partir de ahora, eres parte de una comunidad increíble donde crecerás profesionalmente.</p>
+        
+            <p><strong>🔹 Tu número de trabajador es:</strong> <span style='font-size: 18px; color: #28a745;'>$numero_trabajador</span></p>
+            <p><strong>🔹 Tu Contraseña es:</strong> <span style='font-size: 18px; color: #28a745;'>$password_plana</span></p>
+        
+            <h3>📌 Próximos pasos:</h3>
+            <ul>
+                <li>Accede a nuestra plataforma: <a href='$url_plataforma' style='color: #007bff;'>$url_plataforma</a></li>
+                <li>Si tienes dudas, contáctanos en: <a href='mailto:$correo_contacto'>$correo_contacto</a></li>
+            </ul>
+        
+            <p>Estamos seguros de que lograrás grandes cosas con nosotros. ¡Mucho éxito en esta nueva etapa! 🚀</p>
+        
+            <p>Saludos,<br>
+            <strong>Equipo de Recursos Humanos</strong><br>
+            $empresa | <a href='mailto:$correo_contacto'>$correo_contacto</a>
+            </p>
+        </body>
+        </html>
+        ";
+        
+        // Encabezados para correo HTML
+        $cabeceras = "MIME-Version: 1.0" . "\r\n";
+        $cabeceras .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $cabeceras .= "From: Recursos Humanos <$correo_contacto>" . "\r\n";
+        $cabeceras .= "Reply-To: $correo_contacto" . "\r\n";
+
+
+        //informacion para notificar nuevos trabajadores
+        $asunto_notificacion = "Nuevo trabajador registrado";
+        $mensaje_notificacion = "Se ha registrado un nuevo trabajador.\n\n";
+        $mensaje_notificacion .= "📌 Nombre: $nombre_empleado \n";
+        $mensaje_notificacion .= "📌 Número de trabajador: $numero_trabajador\n\n";
+        $mensaje_notificacion .= "Saludos,\nEquipo de Recursos Humanos";
+
+        mail($para, $asunto, $mensaje, $cabeceras);
+        mail("narcy@jemocontractors.com", $asunto_notificacion, $mensaje_notificacion, $cabeceras);
+        mail("kevin@jemocontractors.com", $asunto_notificacion, $mensaje_notificacion, $cabeceras);
+
 
         if ($stmt->execute()) {
             session_start();

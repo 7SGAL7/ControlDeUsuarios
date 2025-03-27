@@ -61,7 +61,7 @@ $(document).ready(function () {
             }
         ],
         language: {
-            url: '//cdn.datatables.net/plug-ins/2.2.1/i18n/es-ES.json',
+            url: 'https://cdn.datatables.net/plug-ins/2.0.0/i18n/es-ES.json',
             searchBuilder: {
                 button: "Filtro avanzado",
                 title: "Filtro avanzado"
