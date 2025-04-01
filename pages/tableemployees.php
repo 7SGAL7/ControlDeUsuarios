@@ -37,13 +37,12 @@
         require '../bd/conection.php';
         $sql = "SELECT * FROM employees ORDER BY `employees`.`id` DESC;";
         $result = $conn->query($sql);
-
     ?>
-
         <div class="container">
             <h1>SISTEMA DE REGISTRO DE TRABAJADORES</h1>
             <a class="btn btn-outline-success" href ="controller/controllerGenerarExcel.php"><img src = "icon/flecha-descarga.png" style = "width:20px"></i> Descargar en Excel</a>
             <a class="btn btn-outline-success" href ="GenerarExcelParcial.php"><img src = "icon/flecha-descarga.png" style = "width:20px"></i> Descargar parcial</a>
+            <br>
             <table id="table-employees">
                 <thead>
                     <tr>
@@ -89,6 +88,7 @@
                     <?php  } } ?>
                 </tbody>
             </table>
+            
             <div class="row justify-content-between">
 
                 <div class="col-12 col-md-4">
@@ -100,8 +100,9 @@
                 <input type="hidden" id="pagina" value="1">
                 <input type="hidden" id="orderCol" value="0">
                 <input type="hidden" id="orderType" value="asc">
-
             </div>
+            <!-- Botón para abrir el modal con los nombres filtrados -->
+            <button class="btn btn-danger mt-3" onclick="abrirModalEnvio()">Notificar Usuarios</button>
         </div>
         
         <!-- Modal -->
@@ -247,14 +248,121 @@
                             <input type="hidden" id="deleteUserId" name="deleteUserId">
                             <button type="submit" class="btn btn-danger">Sí, eliminar</button>
                         </form>
+                        
+                    </div>
+                </div>
+            </div>
+            <!-- Agregar el botón debajo de la tabla -->
+        </div>
+
+
+        <!-- Modal para enviar correo o SMS -->
+        <div class="modal fade" id="modalEnvio" tabindex="-1" aria-labelledby="modalEnvioLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEnvioLabel">Enviar Correo o SMS</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <!-- Botón para mostrar u ocultar la lista -->
+                        <button class="btn btn-secondary mb-2" id="toggleListaBtn" onclick="toggleLista()">
+                            Mostrar Empleados
+                        </button>
+
+                        <!-- Lista de empleados (inicialmente oculta) -->
+                        <ul id="lista-empleados" class="list-group" style="display: none;"></ul>
+
+                        <form id="formEnvio" method="POST" action="controller/enviarMensaje.php">
+                            <input type="hidden" id="empleadosSeleccionados" name="empleadosSeleccionados">
+                            
+                            <label for="tipoMensaje" class="form-label">Seleccionar envío:</label>
+                            <select class="form-select" id="tipoMensaje" name="tipoMensaje">
+                                <option value="email">Correo Electrónico</option>
+                                <option value="sms">Mensaje SMS</option>
+                            </select>
+
+                            <label for="mensaje" class="form-label mt-2">Mensaje:</label>
+                            <textarea class="form-control" id="mensaje" name="mensaje" rows="4" required></textarea>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Enviar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src = "json/employees.js">                  
+        </script>
+        <script>
+            function abrirModalEnvio() {
+            let empleados = [];
+            let table = $('#table-employees').DataTable();
+            let datos = table.rows({ search: 'applied' }).data();
+
+            if (datos.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'No hay empleados seleccionados',
+                    text: 'Por favor, filtra o selecciona empleados antes de enviar el mensaje.',
+                });
+                return;
+            }
+
+            // Vaciar lista del modal
+            $('#lista-empleados').empty();
+
+            datos.each(function(value, index) {
+                let id = value[0]; // ID (primera columna)
+                let nombre = value[1]; // Nombre (segunda columna)
+                empleados.push({ id, nombre });
+
+                // Agregar a la lista del modal
+                $('#lista-empleados').append(`<li class="list-group-item">${nombre} (${id})</li>`);
+            });
+
+            // Guardar en input oculto para enviar al backend
+            $('#empleadosSeleccionados').val(JSON.stringify(empleados));
+
+            // Asegurarse de que la lista esté oculta al abrir el modal
+            $('#lista-empleados').hide();
+            $('#toggleListaBtn').text("Mostrar Empleados");
+
+            // Mostrar confirmación con SweetAlert antes de abrir el modal
+            Swal.fire({
+                title: '¿Enviar mensaje?',
+                text: `Se enviará un mensaje a ${empleados.length} empleados.`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, continuar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#modalEnvio').modal('show');
+                }
+            });
+            }
+            function toggleLista() {
+                let lista = $('#lista-empleados');
+                let boton = $('#toggleListaBtn');
+
+                if (lista.is(":visible")) {
+                    lista.hide();
+                    boton.text("Mostrar Empleados");
+                } else {
+                    lista.show();
+                    boton.text("Ocultar Empleados");
+                }
+            }
+            $(document).ready(function() {
+                $('#table-employees').DataTable();
+            });
         </script>
     </body>
 </html>

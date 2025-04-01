@@ -1,5 +1,4 @@
 <?php
-
     require 'services/EmailService.php';
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -13,10 +12,9 @@
         }
 
         $emails = array_column($clientes, 'email');
+
         $emailService = new EmailService();
         $respuesta = $emailService->enviarCorreo($emails, "Notificación de Proyecto", $mensaje);
-
         echo $respuesta;
-
     }
 ?>

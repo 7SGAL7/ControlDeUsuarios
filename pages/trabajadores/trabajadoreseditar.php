@@ -10,6 +10,9 @@
 
     $id = $_SESSION["idtrabajador"];
 
+    // Incluir el archivo de conexión
+    require 'MenuTrabajadores.php';
+
     // Consulta para obtener los datos del trabajador
     $sql = "SELECT Name, LastName, Email, Address, Birthdate, SSN, foto FROM employees WHERE id = ?";
     $stmt = $conn->prepare($sql);
@@ -30,7 +33,7 @@
     $direccion = htmlspecialchars($empleado["Address"]);
     $fecha_nacimiento = $empleado["Birthdate"];
     $ssn = htmlspecialchars($empleado["SSN"]);
-    $foto = !empty($empleado["foto"]) ? $empleado["foto"] : "https://via.placeholder.com/100";
+    $foto = !empty($empleado["foto"]) ? $empleado["foto"] : "../img/employeeicon.png";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -38,11 +41,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Empleado</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../icon/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="../icon/favicon/favicon.svg">
+    <link rel="shortcut icon" href="/pages/icon/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="../icon/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="../icon/favicon/site.webmanifest">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="../librery/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../librery/js/bootstrap.bundle.min.js"></script>
+    <script src="../librery/js/jquery-3.7.1.js"></script>
     <style>
-        body { background-color: #f8d7da; }
-        .container { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 40px 0; }
+        body { background-color: #f8d7da;  padding-top: 30px;}
+        .container { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 40px 0;}
         .card { max-width: 600px; width: 100%; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); background-color: white; }
         .card-header { background-color: #dc3545; color: white; text-align: center; font-size: 1.5rem; font-weight: bold; padding: 15px; }
         .btn-red { background-color: #dc3545; color: white; border: none; }
@@ -52,8 +63,7 @@
     </style>
 </head>
 <body>
-
-<div class="container">
+<div class="container menu-config">
         <div class="card">
             <div class="card-header">Actualizar Información</div>
             <div class="card-body">
@@ -64,7 +74,6 @@
                     <div class="image-preview mb-3" id="imagePreview">
                         <img src="<?= $foto; ?>" id="previewImg" alt="Vista previa">
                     </div>
-
                     <!-- Campo para subir imagen -->
                     <div class="mb-3 text-center">
                         <label class="form-label" for="detalleImagen">Subir Imagen:</label>
@@ -122,60 +131,62 @@
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#formUsuario").submit(function (event) {
-            event.preventDefault(); // Evitar que la página se recargue
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#formUsuario").submit(function (event) {
+                event.preventDefault(); // Evitar que la página se recargue
 
-            var formData = new FormData(this); // Capturar datos del formulario
+                var formData = new FormData(this); // Capturar datos del formulario
 
-            $.ajax({
-                url: "../controller/controllerGuardarEmpleadoUser.php",
-                type: "POST",
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    console.log("Respuesta del servidor:", response); 
-                    try {
-                        var res = (typeof response === "string") ? JSON.parse(response) : response;  // ✅ CORREGIDO
-                        if (res.status === "success") {
-                            Swal.fire({
-                                icon: "success",
-                                title: "¡Éxito!",
-                                text: res.message,
-                                confirmButtonColor: "#28a745"
-                            }).then(() => {
-                                location.reload(); // Recargar la página
-                            });
-                        } else {
+                $.ajax({
+                    url: "../controller/controllerGuardarEmpleadoUser.php",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log("Respuesta del servidor:", response); 
+                        try {
+                            var res = (typeof response === "string") ? JSON.parse(response) : response;  // ✅ CORREGIDO
+                            if (res.status === "success") {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "¡Éxito!",
+                                    text: res.message,
+                                    confirmButtonColor: "#28a745"
+                                }).then(() => {
+                                    location.reload(); // Recargar la página
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error",
+                                    text: res.message,
+                                    confirmButtonColor: "#dc3545"
+                                });
+                            }
+                        } catch (error) {
                             Swal.fire({
                                 icon: "error",
-                                title: "Error",
-                                text: res.message,
+                                title: "Error inesperado",
+                                text: "No se pudo procesar la respuesta.",
                                 confirmButtonColor: "#dc3545"
                             });
                         }
-                    } catch (error) {
+                    },
+                    error: function () {
                         Swal.fire({
                             icon: "error",
-                            title: "Error inesperado",
-                            text: "No se pudo procesar la respuesta.",
+                            title: "Error",
+                            text: "No se pudo conectar con el servidor.",
                             confirmButtonColor: "#dc3545"
                         });
                     }
-                },
-                error: function () {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "No se pudo conectar con el servidor.",
-                        confirmButtonColor: "#dc3545"
-                    });
-                }
+                });
             });
         });
-    });
-</script>
+    </script>
 </body>
 </html>

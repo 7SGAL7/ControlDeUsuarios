@@ -1,7 +1,30 @@
 <?php
+    session_start();
     $username_value = '';
+    $password_value = '';
     if (isset($_COOKIE['username'])) {
         $username_value = $_COOKIE['username'];  // Obtener el nombre de usuario de la cookie
+    }
+    if (isset($_COOKIE['password'])) {
+        $password_value = $_COOKIE['password'];  // Obtener el nombre de usuario de la cookie
+    }
+    $tiempo_bloqueo = 10 * 60; 
+
+    // Inicializar intentos si no existen
+    if (!isset($_SESSION['intentos'])) {
+        $_SESSION['intentos'] = 0;
+    }
+
+    // Comprobar si el usuario está bloqueado
+    if (isset($_SESSION['bloqueo'])) {
+        $tiempo_restante = ($_SESSION['bloqueo'] + $tiempo_bloqueo) - time();
+        if ($tiempo_restante > 0) {
+            header("location: pages/bloqueo.php");
+        } else {
+            // Si ya pasaron los 10 minutos, restablecer el bloqueo
+            unset($_SESSION['bloqueo']);
+            $_SESSION['intentos'] = 0;
+        }
     }
 ?>
 
@@ -30,7 +53,7 @@
             <input type="text" id="username"  name="username" class="form-control" placeholder="Username" required="" autofocus="" value = "<?php echo $username_value; ?>">
         </div>
         <div class="d-flex justify-content-center mb-3">
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="" value = "<?php echo $password_value; ?>">
         </div>
 
         <div class="form-check">

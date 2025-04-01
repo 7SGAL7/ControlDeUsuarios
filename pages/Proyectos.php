@@ -16,6 +16,11 @@ while ($row = $result->fetch_assoc()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enviar Mensajes</title>
+    <link rel="icon" type="image/png" href="icon/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="icon/favicon//favicon.svg" />
+    <link rel="shortcut icon" href="icon/favicon//favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="icon/favicon//apple-touch-icon.png" />
+    <link rel="manifest" href="icon/favicon//site.webmanifest" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -179,9 +184,13 @@ while ($row = $result->fetch_assoc()) {
                 }
 
                 $.post("controller/controllerEnviarEmail.php", { clientes: clientes, mensaje: mensaje }, function (respuesta) {
-                    Swal.fire("Éxito", respuesta, "success");
+                    if (respuesta.includes("Error:")) {
+                        Swal.fire("Error", respuesta, "error");
+                    } else {
+                        Swal.fire("Éxito", respuesta, "success");
+                    }
                 }).fail(function () {
-                    Swal.fire("Error", "Hubo un problema al enviar el correo.", "error");
+                    Swal.fire("Error", "Hubo un problema al enviar el correo." , "error");
                 });
             });
 
