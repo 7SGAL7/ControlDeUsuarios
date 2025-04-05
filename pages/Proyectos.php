@@ -133,85 +133,116 @@ while ($row = $result->fetch_assoc()) {
     </div>
 
     <script>
-        $(document).ready(function () {
-            // Cargar clientes cuando se seleccione un proyecto
-            $("#proyecto").change(function () {
-                let proyectoId = $(this).val();
-                let clientesLista = $("#clientes-lista");
-                clientesLista.empty();
+    $(document).ready(function () {
+        // Cargar clientes cuando se seleccione un proyecto
+        $("#proyecto").change(function () {
+            let proyectoId = $(this).val();
+            let clientesLista = $("#clientes-lista");
+            clientesLista.empty();
 
-                if (proyectoId) {
-                    $.get("controller/controllerObtenerCliente.php", { proyecto_id: proyectoId }, function (data) {
-                        let clientes = JSON.parse(data);
-                        if (clientes.length > 0) {
-                            clientes.forEach(cliente => {
-                                clientesLista.append(`
-                                    <div class="form-check">
-                                        <input class="form-check-input cliente-checkbox" type="checkbox" value="${cliente.Email}" data-telefono="${cliente.Phone}">
-                                        <label class="form-check-label">${cliente.Name} (${cliente.Email})</label>
-                                    </div>
-                                `);
-                            });
-                        } else {
-                            clientesLista.append('<p class="text-danger">No hay clientes en este proyecto.</p>');
-                        }
-                    }).fail(function () {
-                        Swal.fire("Error", "No se pudieron cargar los clientes.", "error");
-                    });
-                }
-            });
-
-            // Función para obtener clientes seleccionados
-            function obtenerSeleccionados() {
-                let seleccionados = [];
-                $(".cliente-checkbox:checked").each(function () {
-                    seleccionados.push({
-                        email: $(this).val(),
-                        telefono: $(this).data("telefono")
-                    });
-                });
-                return seleccionados;
-            }
-
-            // Enviar Correo con SweetAlert2
-            $("#enviarCorreo").click(function () {
-                let clientes = obtenerSeleccionados();
-                let mensaje = $("#mensaje").val();
-
-                if (clientes.length === 0 || mensaje.trim() === "") {
-                    Swal.fire("Error", "Selecciona clientes y escribe un mensaje.", "error");
-                    return;
-                }
-
-                $.post("controller/controllerEnviarEmail.php", { clientes: clientes, mensaje: mensaje }, function (respuesta) {
-                    if (respuesta.includes("Error:")) {
-                        Swal.fire("Error", respuesta, "error");
+            if (proyectoId) {
+                $.get("controller/controllerObtenerCliente.php", { proyecto_id: proyectoId }, function (data) {
+                    let clientes = JSON.parse(data);
+                    if (clientes.length > 0) {
+                        clientes.forEach(cliente => {
+                            clientesLista.append(`
+                                <div class="form-check">
+                                    <input class="form-check-input cliente-checkbox" type="checkbox" value="${cliente.Email}" data-telefono="${cliente.Phone}">
+                                    <label class="form-check-label">${cliente.Name} (${cliente.Email})</label>
+                                </div>
+                            `);
+                        });
                     } else {
-                        Swal.fire("Éxito", respuesta, "success");
+                        clientesLista.append('<p class="text-danger">No hay clientes en este proyecto.</p>');
                     }
                 }).fail(function () {
-                    Swal.fire("Error", "Hubo un problema al enviar el correo." , "error");
+                    Swal.fire("Error", "No se pudieron cargar los clientes.", "error");
+                });
+            }
+        });
+
+        // Función para obtener clientes seleccionados
+        function obtenerSeleccionados() {
+            let seleccionados = [];
+            $(".cliente-checkbox:checked").each(function () {
+                seleccionados.push({
+                    email: $(this).val(),
+                    telefono: $(this).data("telefono")
                 });
             });
+            return seleccionados;
+        }
 
-            // Enviar SMS con SweetAlert2
-            $("#enviarSMS").click(function () {
-                let clientes = obtenerSeleccionados();
-                let mensaje = $("#mensaje").val();
+        // Enviar Correo con SweetAlert2
+        $("#enviarCorreo").click(function () {
+            let clientes = obtenerSeleccionados();
+            let mensaje = $("#mensaje").val();
 
-                if (clientes.length === 0 || mensaje.trim() === "") {
-                    Swal.fire("Error", "Selecciona clientes y escribe un mensaje.", "error");
-                    return;
+            if (clientes.length === 0 || mensaje.trim() === "") {
+                Swal.fire("Error", "Selecciona clientes y escribe un mensaje.", "error");
+                return;
+            }
+
+            // Mostrar mensaje de carga
+            Swal.fire({
+                title: 'Enviando correo...',
+                text: 'Por favor espera mientras enviamos el correo.',
+                icon: 'info',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading(); // Muestra el ícono de carga
                 }
+            });
 
-                $.post("controller/controllerEnviarSMS.php", { clientes: clientes, mensaje: mensaje }, function (respuesta) {
+            // Enviar correo con AJAX
+            $.post("controller/controllerEnviarEmail.php", { clientes: clientes, mensaje: mensaje }, function (respuesta) {
+                Swal.hideLoading(); // Ocultar el ícono de carga
+                if (respuesta.includes("Error:")) {
+                    Swal.fire("Error", respuesta, "error");
+                } else {
                     Swal.fire("Éxito", respuesta, "success");
-                }).fail(function () {
-                    Swal.fire("Error", "Hubo un problema al enviar el SMS.", "error");
-                });
+                }
+            }).fail(function () {
+                Swal.hideLoading(); // Ocultar el ícono de carga
+                Swal.fire("Error", "Hubo un problema al enviar el correo.", "error");
             });
         });
+
+        // Enviar SMS con SweetAlert2
+        $("#enviarSMS").click(function () {
+            let clientes = obtenerSeleccionados();
+            let mensaje = $("#mensaje").val();
+
+            if (clientes.length === 0 || mensaje.trim() === "") {
+                Swal.fire("Error", "Selecciona clientes y escribe un mensaje.", "error");
+                return;
+            }
+
+            // Mostrar mensaje de carga
+            Swal.fire({
+                title: 'Enviando SMS...',
+                text: 'Por favor espera mientras enviamos el SMS.',
+                icon: 'info',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading(); // Muestra el ícono de carga
+                }
+            });
+
+            // Enviar SMS con AJAX
+            $.post("controller/controllerEnviarSMS.php", { clientes: clientes, mensaje: mensaje }, function (respuesta) {
+                Swal.hideLoading(); // Ocultar el ícono de carga
+                Swal.fire("Éxito", respuesta, "success");
+            }).fail(function () {
+                Swal.hideLoading(); // Ocultar el ícono de carga
+                Swal.fire("Error", "Hubo un problema al enviar el SMS.", "error");
+            });
+        });
+    });
     </script>
+
 
 </body>
 </html>

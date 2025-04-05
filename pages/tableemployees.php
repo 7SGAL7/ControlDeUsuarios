@@ -21,6 +21,7 @@
         <link href="librery/css/dataTables.bootstrap5.css" rel="stylesheet" type="text/css">  
         <link rel="stylesheet" href="https://cdn.datatables.net/searchbuilder/1.7.0/css/searchBuilder.dataTables.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <!-- Bootstrap core JS -->
         <script src="librery/js/bootstrap.bundle.min.js"></script>
         <script src="librery/js/jquery-3.7.1.js"></script>
@@ -274,7 +275,7 @@
                         <!-- Lista de empleados (inicialmente oculta) -->
                         <ul id="lista-empleados" class="list-group" style="display: none;"></ul>
 
-                        <form id="formEnvio" method="POST" action="controller/enviarMensaje.php">
+                        <form id="formEnvio" method="POST" action="controller/controllerEnviarMensaje.php">
                             <input type="hidden" id="empleadosSeleccionados" name="empleadosSeleccionados">
                             
                             <label for="tipoMensaje" class="form-label">Seleccionar envío:</label>
@@ -364,5 +365,80 @@
                 $('#table-employees').DataTable();
             });
         </script>
+
+        <script>
+            $(document).ready(function(){
+            // Interceptar el evento de envío del formulario
+            $("#formEnvio").submit(function(e){
+                e.preventDefault(); // Evita que el formulario se envíe de forma tradicional
+
+                // Recolectar los datos del formulario
+                var empleadosSeleccionados = $("#empleadosSeleccionados").val();
+                var tipoMensaje = $("#tipoMensaje").val();
+                var mensaje = $("#mensaje").val();
+
+                // Crear un objeto con los datos
+                var formData = {
+                    empleadosSeleccionados: empleadosSeleccionados,
+                    tipoMensaje: tipoMensaje,
+                    mensaje: mensaje
+                };
+
+                // Mostrar el mensaje de carga con SweetAlert2
+                Swal.fire({
+                    title: 'Enviando mensaje...',
+                    text: 'Por favor espera mientras procesamos tu solicitud.',
+                    icon: 'info',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,  // Impide cerrar el modal al hacer clic fuera
+                    didOpen: () => {
+                        Swal.showLoading(); // Muestra el ícono de carga
+                    }
+                });
+
+                // Enviar los datos a través de AJAX
+                $.ajax({
+                    url: 'controller/controllerEnviarMensaje.php', // URL del archivo PHP que procesará el formulario
+                    type: 'POST', // Método de envío
+                    data: formData, // Los datos a enviar
+                    success: function(response){
+                        var data = JSON.parse(response); // Decodificar la respuesta JSON
+                        if (data.status === "success") {
+                            // Si la respuesta es exitosa, mostrar un SweetAlert de éxito
+                            Swal.fire({
+                                title: 'Éxito!',
+                                text: data.message,
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar'
+                            });
+                        } else {
+                            // Si hubo un error, mostrar un SweetAlert de error
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data.message,
+                                icon: 'error',
+                                confirmButtonText: 'Aceptar'
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error){
+                        // Si ocurre un error en la solicitud AJAX, mostrar un SweetAlert de error
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Ocurrió un problema al enviar el mensaje.',
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    },
+                    complete: function() {
+                        // Siempre se ejecuta al finalizar la solicitud, ocultamos el loading
+                        Swal.hideLoading();
+                    }
+                });
+            });
+        });
+        </script>
+
+
     </body>
 </html>
