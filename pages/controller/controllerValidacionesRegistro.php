@@ -2,6 +2,7 @@
     require '../bd/conection.php';
     require_once '../vendor/autoload.php';
     use Twilio\Rest\Client;
+    use Twilio\Exceptions\RestException;
     use Dotenv\Dotenv;
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
@@ -23,7 +24,7 @@
 
         if (!$responseKeys["success"]) {
             $captchaError = "reCAPTCHA no válido";
-            $errores[] = $captchaError;
+            //$errores[] = $captchaError;
         }
 
 
@@ -206,22 +207,29 @@
                 die("Error: No se pudieron cargar las credenciales de Twilio. Revisa tu archivo .env.");
             }
 
-            $sid    = $twilioSid;
-            $token  = $twilioToken;
-            $twilio = new Client($sid, $token);
 
-            $message = $twilio->messages
-                ->create($telefonoLada, // to
-                    array(
-                    "from" => $twilioPhone,
-                    "body" => "Hola $nombre $apellido, bienvenido a Jemoworkers\n"
-                    . "Tu cuenta ha sido creada con éxito.\n"
-                    . "Número de trabajador: $matriz\n"
-                    . "Contraseña: $password_plana\n"
-                    . "¡Bienvenido al equipo!"
-                    )
-                );
-            print($message->sid);
+            try{
+                $sid    = $twilioSid;
+                $token  = $twilioToken;
+                $twilio = new Client($sid, $token);
+    
+                $message = $twilio->messages
+                    ->create($telefonoLada, // to
+                        array(
+                        "from" => $twilioPhone,
+                        "body" => "Hola $nombre $apellido, bienvenido a Jemoworkers\n"
+                        . "Tu cuenta ha sido creada con éxito.\n"
+                        . "Número de trabajador: $matriz\n"
+                        . "Contraseña: $password_plana\n"
+                        . "¡Bienvenido al equipo!"
+                        )
+                    );
+                print($message->sid);
+            } catch (RestException $e) {
+                // Manejo del error
+                  echo "No se pudo enviar el mensaje: " . $e->getMessage();
+            }
+            
             
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("sssssssss", $nombre, $apellido, $matriz, $password_hash, $fecha_nacimiento, $telefono, $dateWork, $email, $ciudad);
@@ -247,7 +255,7 @@
                 
                     $numero_trabajador = $matriz; // Número de trabajador generado
                     $nombre_empleado = $nombre . " " . $apellido; // Nombre del empleado
-                    $empresa = "Jemowokers"; // Nombre de la empresa
+                    $empresa = "Jemoworkers"; // Nombre de la empresa
                     $correo_contacto = "info@jemoworkers.com"; // Correo de contacto
                     $url_plataforma = "https://jemoworkers.com/ControlDeUsuarios/login.php"; // URL del portal de empleados
                     
@@ -259,7 +267,7 @@
                     </head>
                     <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
                         <h2>¡Bienvenido a <span style='color: #007bff;'>$empresa</span>, $nombre_empleado! 🎉</h2>
-                        <p>Estamos emocionados de que te unas a nuestro equipo. A partir de ahora, eres parte de una comunidad increíble donde crecerás profesionalmente.</p>
+                        <p>Estamos emocionados de que te unas a nuestro equipo. Estos son tus datos:</p>
                     
                         <p><strong>🔹 Tu número de trabajador es:</strong> <span style='font-size: 18px; color: #28a745;'>$numero_trabajador</span></p>
                         <p><strong>🔹 Tu Contraseña es:</strong> <span style='font-size: 18px; color: #28a745;'>$password_plana</span></p>
@@ -273,7 +281,7 @@
                         <p>Estamos seguros de que lograrás grandes cosas con nosotros. ¡Mucho éxito en esta nueva etapa! 🚀</p>
                     
                         <p>Saludos,<br>
-                        <strong>Equipo de Recursos Humanos</strong><br>
+                        <strong>Equipo de JEMO</strong><br>
                         $empresa | <a href='mailto:$correo_contacto'>$correo_contacto</a>
                         </p>
                     </body>
